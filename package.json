@@ -1,0 +1,56 @@
+{
+  "name": "@yamato-daiwa/express-extensions",
+  "version": "0.0.0",
+  "description": "Additional functionality for Express.js and also \"routing-controllers\" aimed to reduce the routine code.",
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "express"
+  ],
+  "author": {
+    "name": "Yamato Daiwa Co., Ltd."
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/TokugawaTakeshi/YamatoDaiwaExpressExtensions",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TokugawaTakeshi/YamatoDaiwaExpressExtensions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TokugawaTakeshi/YamatoDaiwaExpressExtensions/issues"
+  },
+  "main": "./Distributable/index.js",
+  "sideEffects": false,
+  "types": "./Distributable/index.d.ts",
+  "files": [
+    "Distributable"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "body-parser": "~1.20.0",
+    "express": "~4.21.0",
+    "express-session": "~1.18.0",
+    "routing-controllers": "~0.10.0"
+  },
+  "devDependencies": {
+    "@types/express-session": "1.18.1",
+    "@yamato-daiwa/style_guides": "0.6.2",
+    "body-parser": "1.20.3",
+    "express": "4.21.2",
+    "express-session": "1.18.1",
+    "rimraf": "6.0.1",
+    "routing-controllers": "0.10.4",
+    "typescript": "5.7.3"
+  },
+  "scripts": {
+    "Rebuild Distributable Without Preliminary Cleaning": "tsc",
+    "Rebuild Distributable": "rimraf Distributable && tsc",
+    "Rebuild Distributable and Realize Alpha": "npm run \"Rebuild Distributable\" && npm publish --tag alpha",
+    "Rebuild Distributable and Realize RC": "npm run \"Rebuild Distributable\" && npm publish --tag rc"
+  },
+  "dependencies": {
+    "@yamato-daiwa/es-extensions": "1.7.2"
+  }
+}
