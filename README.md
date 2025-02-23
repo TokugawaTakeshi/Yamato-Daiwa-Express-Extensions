@@ -20,6 +20,8 @@ Also, install the following peer dependencies if not installed yet.
 
 ## Functionality
 
++ [`ExpressMiddleware`](#expressmiddleware)
+
 + Session
 
   + [`saveExpressSession`](#saveexpresssession)
@@ -29,6 +31,66 @@ Also, install the following peer dependencies if not installed yet.
 
   + [`parseAndValidateJSON_RequestBody`](#parseandvalidatejson_requestbody)
   + [`validateAndProcessJSON_RequestBody`](#validateandprocessrequestbody) 
+
+
+### `ExpressMiddleware`
+
+The abstract class intended to be extended for the creating of Express middleware and using with
+  [`@UseBefore` and `@UseAfter` decorators](https://www.npmjs.com/package/routing-controllers/v/0.6.0-beta.3#using-middlewares).
+Unlike [`MiddlewareInterface` and `@Middleware()` decorator](https://www.npmjs.com/package/routing-controllers/v/0.6.0-beta.3#creating-your-own-express-middleware) 
+  of **routing-controllers**, has safely typed parameters.
+
+```mermaid
+classDiagram
+  class ExpressMiddleware {
+    <<abstract>>
+    #handleRequest(request: Express.Request, response: Express.Response, toNextMiddleware: ToNextMiddlewareTransfer) Promise<void>
+  }
+```
+
+The only method need to be implemented is `handleRequest`:
+
+```
+(
+  request: Express.Request,
+  response: Express.Response,
+  toNextMiddleware: ExpressMiddleware.ToNextMiddlewareTransfer
+): Promise<void>
+```
+
+#### Example
+
+```typescript
+import type Express from "express";
+import ExpressMiddleware from "@Incubators/routing-controllers-polyfills/ExpressMiddleware";
+import { Logger } from "@yamato-daiwa/es-extensions";
+
+
+export default class DebuggerMiddleware extends ExpressMiddleware {
+
+  protected override async handleRequest(
+      request: Express.Request,
+      response: Express.Response,
+      toNextMiddleware: ExpressMiddleware.ToNextMiddlewareTransfer
+  ): Promise<void> {
+
+    Logger.logInfo({
+      title: "DebuggerMiddleware",
+      description: "",
+      additionalData: {
+        request,
+        response
+      }
+    });
+
+    toNextMiddleware();
+    return Promise.resolve();
+
+  }
+
+}
+```
+
 
 
 ### Session
@@ -47,10 +109,10 @@ The promise will reject if the callback of `session.save` will receive
 
 ```
 # === [ Overload 1 ] Must waint until completion
-export function disposeExpressSession(session: Session, options: Readonly<{ mustWaitUntilCompletion: true; }>): Promise<void>;
+(session: Session, options: Readonly<{ mustWaitUntilCompletion: true; }>): Promise<void>;
 
 # === [ Overload 2 ] Do not waint until completion
-export function disposeExpressSession(session: Session, options: Readonly<{ mustWaitUntilCompletion: false; }>): void;
+(session: Session, options: Readonly<{ mustWaitUntilCompletion: false; }>): void;
 ```
 
 The wrapper for [`session.destroy(callback)`](https://www.npmjs.com/package/express-session#user-content-sessiondestroycallback).
@@ -89,7 +151,6 @@ The *alternative* to [class-transformer](https://github.com/typestack/class-tran
 
 
 #### `validateAndProcessJSON_RequestBody`
-
 
 ```
 <RequestData extends ReadonlyParsedJSON>(
