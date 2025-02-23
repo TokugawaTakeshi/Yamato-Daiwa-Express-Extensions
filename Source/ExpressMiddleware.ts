@@ -2,7 +2,7 @@ import type { ExpressMiddlewareInterface } from "routing-controllers";
 import type Express from "express";
 
 
-abstract class ExpressMiddleware implements ExpressMiddlewareInterface {
+export abstract class ExpressMiddleware implements ExpressMiddlewareInterface {
 
   protected abstract handleRequest(
     request: Express.Request,
@@ -33,11 +33,8 @@ abstract class ExpressMiddleware implements ExpressMiddlewareInterface {
 }
 
 
-namespace ExpressMiddleware {
+export namespace ExpressMiddleware {
 
   export type ToNextMiddlewareTransfer = (error?: unknown) => unknown;
 
 }
-
-
-export default ExpressMiddleware;
