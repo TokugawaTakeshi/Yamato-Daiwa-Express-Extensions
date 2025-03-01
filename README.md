@@ -21,6 +21,7 @@ Also, install the following peer dependencies if not installed yet.
 ## Functionality
 
 + [`ExpressMiddleware`](#expressmiddleware)
++ [`Route`]()
 
 + Session
 
@@ -91,6 +92,12 @@ export default class DebuggerMiddleware extends ExpressMiddleware {
 }
 ```
 
+### `Route`
+
+The adapter for `Method` decorator from **routing-controllers** to `HTTP_Methods` enumeration from 
+  ["fundamental-constants"](https://www.npmjs.com/package/fundamental-constants)/["@yamato-daiwa/es-extensions"](https://www.npmjs.com/package/@yamato-daiwa/es-extensions).
+
+
 
 
 ### Session
@@ -108,10 +115,10 @@ The promise will reject if the callback of `session.save` will receive
 #### `disposeExpressSession`
 
 ```
-# === [ Overload 1 ] Must waint until completion
+# === [ Overload 1 ] Must wait until completion
 (session: Session, options: Readonly<{ mustWaitUntilCompletion: true; }>): Promise<void>;
 
-# === [ Overload 2 ] Do not waint until completion
+# === [ Overload 2 ] Do not wait until completion
 (session: Session, options: Readonly<{ mustWaitUntilCompletion: false; }>): void;
 ```
 
@@ -145,7 +152,7 @@ The *alternative* to [class-transformer](https://github.com/typestack/class-tran
 * Requirements 
   1. **body-parser** has _not_ been applied neither globally nor locally, by other words, the request body
     has not been parsed yet.
-  2. The *class-transformer* is disabled by `useExpressServer({ classTransformer: false })` where the `useExpressServer`
+  2. The **class-transformer** is disabled by `useExpressServer({ classTransformer: false })` where the `useExpressServer`
      is the function from **routing-controllers** 
 * Intended to be used as one of parameters of **routing-controllers** middleware.
 
@@ -166,6 +173,6 @@ The *alternative* to [class-transformer](https://github.com/typestack/class-tran
 
 * Requirements
   1. The JSON-type request body has been preliminary parsed by **body-parser**.
-  2. The *class-transformer* is disabled by `useExpressServer({ classTransformer: false })` where the `useExpressServer`
+  2. The **class-transformer** is disabled by `useExpressServer({ classTransformer: false })` where the `useExpressServer`
      is the function from **routing-controllers**
 * Intended to be used as one of parameters of **routing-controllers** middleware.

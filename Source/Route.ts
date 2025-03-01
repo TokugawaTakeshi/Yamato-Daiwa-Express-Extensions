@@ -1,8 +1,9 @@
 import { Method } from "routing-controllers";
-import { HTTP_Methods, Logger, InvalidParameterValueError } from "@yamato-daiwa/es-extensions";
+import { HTTP_Methods } from "fundamental-constants";
+import { Logger, InvalidParameterValueError } from "@yamato-daiwa/es-extensions";
 
 
-export default function Route(
+export function Route(
   HTTP_Method: HTTP_Methods, pathTemplate: string
 ): (
   target: unknown, propertyKey: string, descriptor: PropertyDescriptor

@@ -1,4 +1,5 @@
 export { ExpressMiddleware } from "./ExpressMiddleware";
+export { Route } from "./Route";
 
 export { parseAndValidateJSON_RequestBody } from "./RequestBody/parseAndValidateJSON_RequestBody";
 export { validateAndProcessJSON_RequestBody } from "./RequestBody/validateAndProcessJSON_RequestBody";
