@@ -1,6 +1,6 @@
 {
   "name": "@yamato-daiwa/express-extensions",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Additional functionality for Express.js and also \"routing-controllers\" aimed to reduce the routine code.",
   "keywords": [
     "nodejs",
@@ -51,6 +51,7 @@
     "Rebuild Distributable and Realize RC": "npm run \"Rebuild Distributable\" && npm publish --tag rc"
   },
   "dependencies": {
-    "@yamato-daiwa/es-extensions": "1.7.2"
+    "@yamato-daiwa/es-extensions": "1.7.2",
+    "fundamental-constants": "0.7.0"
   }
 }
