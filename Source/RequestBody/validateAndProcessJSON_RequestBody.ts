@@ -1,49 +1,46 @@
+/* ─── Framework ──────────────────────────────────────────────────────────────────────────────────────────────────── */
+import type Express from "express";
+
+/* ─── Utils ──────────────────────────────────────────────────────────────────────────────────────────────────────── */
 import {
   RawObjectDataProcessor,
   HTTP_StatusCodes,
-  isArbitraryObject,
-  Logger,
-  InvalidParameterValueError
+  type ReadonlyParsedJSON,
+  Logger
 } from "@yamato-daiwa/es-extensions";
-import type { ReadonlyParsedJSON } from "@yamato-daiwa/es-extensions";
-import type { Response } from "express";
 
 
 export function validateAndProcessJSON_RequestBody<RequestData extends ReadonlyParsedJSON>(
-  validRequestBodySpecification: RawObjectDataProcessor.ObjectDataSpecification
+  validationAndProcessing: RawObjectDataProcessor.ObjectDataSpecification,
+  { mustLogDataAfterParsing = false }: Readonly<{ mustLogDataAfterParsing?: boolean; }> = { mustLogDataAfterParsing: false }
 ): (request: unknown, response: unknown, toNextMiddleware: () => void) => void {
-  return (request: unknown, response: unknown, toNextMiddleware: () => void): void => {
+  return (_request: unknown, _response: unknown, toNextMiddleware: () => void): void => {
 
-    if (!isArbitraryObject(request)) {
+    /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions --
+     * The `Express.Request` is the interface and has no the type guard.
+     * Although it extends `http.IncomingMessage` class, we need `body` field which does not exist on this class.
+     * Being designed for express framework, this middleware assumes that `_request` has `Express.Request` type. */
+    const request: Express.Request = _request as Express.Request;
 
-      /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions --
-      * ※ The "routing-controllers" package does not provide the type guard for `Response` interface. */
-      (response as Response).status(HTTP_StatusCodes.internalServerError);
+    /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions --
+     * The `Express.Response` is the interface and has no the type guard.
+     * Being designed for express framework, this middleware assumes that `_response` has `Express.Response` type. */
+    const response: Express.Response = _response as Express.Response;
 
-      Logger.logError({
-        errorType: InvalidParameterValueError.NAME,
-        title: InvalidParameterValueError.localization.defaultTitle,
-        description: InvalidParameterValueError.localization.generateDescription({
-          parameterName: "request",
-          parameterNumber: 1,
-          messageSpecificPart: `The "request" is not object and has type "${ typeof request }"`
-        }),
-        occurrenceLocation: "validateAndProcessRequestBody -> innerFunction(request, response, toNextMiddleware)"
-      });
-
-      return;
-
-    }
-
+    Logger.logInfo({
+      title: `${ request.method.toUpperCase() }::${ request.url }`,
+      description: "Parsed request body:",
+      additionalData: request.body,
+      mustOutputIf: mustLogDataAfterParsing
+    });
 
     const requestBodyProcessingResult: RawObjectDataProcessor.ProcessingResult<RequestData> = RawObjectDataProcessor.
-      process(request.body, validRequestBodySpecification);
+      process(request.body, validationAndProcessing);
 
 
     if (requestBodyProcessingResult.rawDataIsInvalid) {
 
-      /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions -- See ※ */
-      (response as Response).
+      response.
           status(HTTP_StatusCodes.badRequest).
           json(requestBodyProcessingResult.validationErrorsMessages);
 

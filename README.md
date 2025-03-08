@@ -139,6 +139,7 @@ The wrapper for [`session.destroy(callback)`](https://www.npmjs.com/package/expr
   settings: Readonly<{
     requestBodySizeLimit__bytesPackageFormat: string | number;
     validationAndProcessing: RawObjectDataProcessor.ObjectDataSpecification;
+    mustLogDataAfterParsing?: boolean;
   }>
 ): ExpressMiddleware
 ```
@@ -161,7 +162,8 @@ The *alternative* to [class-transformer](https://github.com/typestack/class-tran
 
 ```
 <RequestData extends ReadonlyParsedJSON>(
-  validRequestBodySpecification: RawObjectDataProcessor.ObjectDataSpecification
+  validationAndProcessing: RawObjectDataProcessor.ObjectDataSpecification,
+  { mustLogDataAfterParsing = false }: Readonly<{ mustLogDataAfterParsing?: boolean; }> = { mustLogDataAfterParsing: false }
 ): ExpressMiddleware
 ```
 

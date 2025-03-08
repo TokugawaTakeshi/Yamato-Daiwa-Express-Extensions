@@ -7,14 +7,20 @@ import {
   RawObjectDataProcessor,
   HTTP_StatusCodes,
   type ReadonlyParsedJSON,
-  isNeitherUndefinedNorNull
+  isNeitherUndefinedNorNull,
+  Logger
 } from "@yamato-daiwa/es-extensions";
 
 
 export function parseAndValidateJSON_RequestBody<RequestData extends ReadonlyParsedJSON>(
-  settings: Readonly<{
+  {
+    requestBodySizeLimit__bytesPackageFormat,
+    validationAndProcessing,
+    mustLogDataAfterParsing = false
+  }: Readonly<{
     requestBodySizeLimit__bytesPackageFormat: string | number;
     validationAndProcessing: RawObjectDataProcessor.ObjectDataSpecification;
+    mustLogDataAfterParsing?: boolean;
   }>
 ): (request: unknown, response: unknown, toNextMiddleware: (error?: unknown) => void) => void {
   return (_request: unknown, _response: unknown, toNextMiddleware: (error?: unknown) => void): void => {
@@ -30,7 +36,7 @@ export function parseAndValidateJSON_RequestBody<RequestData extends ReadonlyPar
      * Being designed for express framework, this middleware assumes that `_response` has `Express.Response` type. */
     const response: Express.Response = _response as Express.Response;
 
-    BodyParser.json({ limit: settings.requestBodySizeLimit__bytesPackageFormat })(
+    BodyParser.json({ limit: requestBodySizeLimit__bytesPackageFormat })(
       request,
       response,
       (error?: unknown): void => {
@@ -41,8 +47,15 @@ export function parseAndValidateJSON_RequestBody<RequestData extends ReadonlyPar
         }
 
 
+        Logger.logInfo({
+          title: `${ request.method.toUpperCase() }::${ request.url }`,
+          description: "Parsed request body:",
+          additionalData: request.body,
+          mustOutputIf: mustLogDataAfterParsing
+        });
+
         const requestBodyValidationAndProcessingResult: RawObjectDataProcessor.ProcessingResult<RequestData> =
-            RawObjectDataProcessor.process(request.body, settings.validationAndProcessing);
+            RawObjectDataProcessor.process(request.body, validationAndProcessing);
 
         if (requestBodyValidationAndProcessingResult.rawDataIsInvalid) {
 
