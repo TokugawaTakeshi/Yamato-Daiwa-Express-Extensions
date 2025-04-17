@@ -12,10 +12,10 @@ npm i @yamato-daiwa/express-extensions -E
 
 Also, install the following peer dependencies if not installed yet.
 
-+ **body-parser**: ~1.20.0
-+ **express**: ~4.21.0
++ **body-parser**: ~2.2.0
++ **express**: ~5.1.0
 + **express-session**: ~1.18.0
-+ **routing-controllers**: ~0.10.0
++ **routing-controllers**: ~0.11.0
 
 
 ## Functionality
