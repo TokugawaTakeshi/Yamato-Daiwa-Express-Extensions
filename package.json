@@ -1,6 +1,6 @@
 {
   "name": "@yamato-daiwa/express-extensions",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Additional functionality for Express.js and also \"routing-controllers\" aimed to reduce the routine code.",
   "keywords": [
     "nodejs",
@@ -26,7 +26,7 @@
     "Distributable"
   ],
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "peerDependencies": {
     "body-parser": "~2.2.0",
@@ -35,12 +35,13 @@
     "routing-controllers": "~0.11.0"
   },
   "dependencies": {
-    "@yamato-daiwa/es-extensions": "1.7.2",
-    "fundamental-constants": "0.7.0"
+    "@yamato-daiwa/es-extensions": "1.8.0-alpha.13",
+    "fundamental-constants": "0.8.0",
+    "qs": "6.14.0"
   },
   "devDependencies": {
     "@types/express-session": "1.18.1",
-    "@yamato-daiwa/style_guides": "0.6.5",
+    "@yamato-daiwa/style_guides": "0.6.8",
     "body-parser": "2.2.0",
     "express": "5.1.0",
     "express-session": "1.18.1",
