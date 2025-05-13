@@ -19,7 +19,7 @@ import {
 import QueryString from "qs";
 
 
-abstract class QueryParametersProcessor {
+export abstract class QueryParametersProcessor {
 
   private static defaultDeserializer: QueryParametersProcessor.Deserializer = QueryString.parse;
 
@@ -86,7 +86,7 @@ abstract class QueryParametersProcessor {
 }
 
 
-namespace QueryParametersProcessor {
+export namespace QueryParametersProcessor {
 
   export type Deserializer = (serializedQueryParameters: string) => ReadonlyParsedJSON_Object;
 
@@ -144,6 +144,3 @@ namespace QueryParametersProcessor {
   }
 
 }
-
-
-export default QueryParametersProcessor;
