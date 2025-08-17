@@ -64,16 +64,16 @@ The only method need to be implemented is `handleRequest`:
 
 ```typescript
 import type Express from "express";
-import ExpressMiddleware from "@Incubators/routing-controllers-polyfills/ExpressMiddleware";
+import { ExpressMiddleware } from "@yamato-daiwa/express-extensions";
 import { Logger } from "@yamato-daiwa/es-extensions";
 
 
 export default class DebuggerMiddleware extends ExpressMiddleware {
 
   protected override async handleRequest(
-      request: Express.Request,
-      response: Express.Response,
-      toNextMiddleware: ExpressMiddleware.ToNextMiddlewareTransfer
+    request: Express.Request,
+    response: Express.Response,
+    toNextMiddleware: ExpressMiddleware.ToNextMiddlewareTransfer
   ): Promise<void> {
 
     Logger.logInfo({
@@ -113,6 +113,7 @@ In comparison with `@QueryParams`,
 
 ```typescript
 import { Controller, Get, Reader } from "routing-controllers";
+import { QueryParametersProcessor } from "@yamato-daiwa/express-extensions";
 import { RawObjectDataProcessor } from "@yamato-daiwa/es-extensions";
 
 
@@ -186,6 +187,7 @@ Additionally, you can set the custom deserializer per request what is basically 
 
 ```typescript
 import { Controller, Get, Reader } from "routing-controllers";
+import { QueryParametersProcessor } from "@yamato-daiwa/express-extensions";
 import { RawObjectDataProcessor, type ReadonlyParsedJSON_Object } from "@yamato-daiwa/es-extensions";
 
 
