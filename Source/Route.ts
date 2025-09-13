@@ -56,7 +56,7 @@ export function Route(
 
       default:
 
-        Logger.throwErrorAndLog({
+        Logger.throwErrorWithFormattedMessage({
           errorInstance: new InvalidParameterValueError({
             parameterNumber: 1,
             parameterName: "HTTP_Method",

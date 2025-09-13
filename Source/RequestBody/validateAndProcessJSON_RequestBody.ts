@@ -19,12 +19,12 @@ export function validateAndProcessJSON_RequestBody<RequestData extends ReadonlyP
     /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions --
      * The `Express.Request` is the interface and has no the type guard.
      * Although it extends `http.IncomingMessage` class, we need `body` field which does not exist on this class.
-     * Being designed for express framework, this middleware assumes that `_request` has `Express.Request` type. */
+     * Being designed for "Express" framework, this middleware assumes that `_request` has `Express.Request` type. */
     const request: Express.Request = _request as Express.Request;
 
     /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions --
      * The `Express.Response` is the interface and has no the type guard.
-     * Being designed for express framework, this middleware assumes that `_response` has `Express.Response` type. */
+     * Being designed for "Express" framework, this middleware assumes that `_response` has `Express.Response` type. */
     const response: Express.Response = _response as Express.Response;
 
     Logger.logInfo({
@@ -38,7 +38,7 @@ export function validateAndProcessJSON_RequestBody<RequestData extends ReadonlyP
       process(request.body, validationAndProcessing);
 
 
-    if (requestBodyProcessingResult.rawDataIsInvalid) {
+    if (requestBodyProcessingResult.isRawDataInvalid) {
 
       response.
           status(HTTP_StatusCodes.badRequest).

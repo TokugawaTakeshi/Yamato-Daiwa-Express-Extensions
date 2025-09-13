@@ -57,7 +57,7 @@ export function parseAndValidateJSON_RequestBody<RequestData extends ReadonlyPar
         const requestBodyValidationAndProcessingResult: RawObjectDataProcessor.ProcessingResult<RequestData> =
             RawObjectDataProcessor.process(request.body, validationAndProcessing);
 
-        if (requestBodyValidationAndProcessingResult.rawDataIsInvalid) {
+        if (requestBodyValidationAndProcessingResult.isRawDataInvalid) {
 
           response.
               status(HTTP_StatusCodes.badRequest).

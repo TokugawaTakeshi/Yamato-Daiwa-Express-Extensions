@@ -21,6 +21,8 @@ Also, install the following peer dependencies if not installed yet.
 ## Functionality
 
 + [`ExpressMiddleware`](#expressmiddleware)
++ [`initializeRoutingControllersExpressHTTPS_Application`](#initializeroutingcontrollersexpresshttps_application)
++ [`redirectOnNotFound`](#redirectonnotfound)
 + [`Route`](#route)
 + [`QueryParametersProcessor`](#queryparametersprocessor)
 
@@ -92,6 +94,239 @@ export default class DebuggerMiddleware extends ExpressMiddleware {
 
 }
 ```
+
+### `initializeRoutingControllersExpressHTTPS_Application`
+
+Initializer of the application using **routing-controllers**, **Express** and **HTTPS protocol**.  
+
+```ts
+(
+  {
+    configuration: {
+      HTTPS,
+      routingControllers
+    },
+    eventsHandlers: {
+      onExpressApplicationCreated,
+      onHTTPS_ServerCreated,
+      onRoutingControllersSetupComplete,
+      onApplicationStarted
+    }
+  }: Readonly<{
+
+    configuration: Readonly<{
+      
+      HTTPS: Readonly<
+        { port: number; } &
+        (
+          (
+            { SSL_Key: string; } |
+            { SSL_KeyFilePath__absoluteOrRelative: string; }
+          ) &
+          (
+            { SSL_Certificate: string; } |
+            { SSL_CertificateFilePath__absoluteOrRelative: string; }
+          ) 
+        )
+      >;
+      routingControllers: RoutingControllersOptions;
+    }>;
+
+    eventsHandlers: Readonly<{
+      onExpressApplicationCreated: (expressApplication: ExpressApplication) => Promise<void>;
+      onHTTPS_ServerCreated?: (HTTPS_Server: NodeHTTPS.Server, expressApplication: ExpressApplication) => Promise<void>;
+      onRoutingControllersSetupComplete?: () => Promise<void>;
+      onApplicationStarted?: () => Promise<void>;
+    }>;
+
+  }>
+): Promise<void>
+```
+
+
+#### Background
+
+The initialization of **routing-controllers** + **Express** + **HTTPS** application 
+  [has not been documented well](https://github.com/typestack/routing-controllers/discussions/1243) 
+  and a little bit complicated:
+
+```ts
+import Express, { type Express as ExpressApplication } from "express";
+import createExpressApplication from "express";
+import { useExpressServer as supportClassSyntax } from "routing-controllers";
+
+import HTTPS from "https";
+import FileSystem from "fs";
+
+
+const expressApplication: ExpressApplication = createExpressApplication();
+
+expressApplication.get(
+  "/",
+  (_request: Express.Request, response: Express.Response): void => {
+    response.send("<h1>Hello, world!</h1>");
+  }
+);
+
+const HTTPS_Server: HTTPS.Server = HTTPS.createServer(
+  {
+    key: FileSystem.readFileSync("./SSL/key.pem"),
+    cert: FileSystem.readFileSync("./SSL/cert.pem")
+  },
+  expressApplication
+);
+
+supportClassSyntax(expressApplication);
+
+HTTPS_Server.listen(443, "127.0.0.1");
+```
+
+**initializeRoutingControllersExpressHTTPS_Application** encapsulates this complexity.
+
+
+#### Configuration
+
+##### `HTTPS` - The HTTPS Requirements
+
+<dl>
+
+  <dt><code>HTTPS</code></dt>
+  <dd>
+    <dl>
+      <dt>Type</dt>
+      <dd>String</dd>
+      <dt>Is Required</dt>
+      <dd>Yes</dd>
+      <dt>Description</dt>
+      <dd>
+        HTTPS port number will be listened.
+        Valid port number expected.
+      </dd>
+    </dl>
+  </dd>
+
+  <dt><code>SSL_Key</code></dt>
+  <dd>
+    <dl>
+      <dt>Type</dt>
+      <dd>String</dd>
+      <dt>Required If</dt>
+      <dd><code>SSL_KeyFilePath__absoluteOrRelative</code> not specified</dd>
+      <dt>Description</dt>
+      <dt>Description</dt>
+      <dd>The string which must represent the valid SSL key.</dd>
+    </dl>
+  </dd>
+
+  <dt><code>SSL_KeyFilePath__absoluteOrRelative</code></dt>
+  <dd>
+    <dl>
+      <dt>Type</dt>
+      <dd>String</dd>
+      <dt>Required If</dt>
+      <dd><code>SSL_Key</code> not specified</dd>
+      <dt>Description</dt>
+      <dd>Expected the valid path (absolute or relative) of the existing file contains the valid SSL key.</dd>
+    </dl>
+  </dd>
+
+  <dt><code>SSL_Certificate</code></dt>
+  <dd>
+    <dl>
+      <dt>Type</dt>
+      <dd>String</dd>
+      <dt>Required If</dt>
+      <dd><code>SSL_CertificateFilePath__absoluteOrRelative</code> not specified</dd>
+      <dt>Description</dt>
+      <dd>The string which must represent the valid SSL certificate.</dd>
+    </dl>
+  </dd>
+
+  <dt><code>SSL_CertificateFilePath__absoluteOrRelative</code></dt>
+  <dd>
+    <dl>
+      <dt>Type</dt>
+      <dd>String</dd>
+      <dt>Required If</dt>
+      <dd><code>SSL_Certificate</code> not specified</dd>
+      <dt>Description</dt>
+      <dd>Expected the valid path (absolute or relative) of the existing file contains the valid SSL certificate.</dd>
+    </dl>
+  </dd>
+
+</dl>
+
+
+##### `routingControllers` - The "routing-controllers" configuration
+
+Options of [routing-controllers](https://www.npmjs.com/package/routing-controllers/v/0.11.3).
+See the [TypeScript type definitions of `RoutingControllersOptions` type](https://app.unpkg.com/routing-controllers@0.11.3/files/types/RoutingControllersOptions.d.ts)
+  for reference.
+
+
+#### Events Handers
+##### `onExpressApplicationCreated`
+
+```
+(expressApplication: ExpressApplication) => Promise<void>
+```
+
+As it obviously from the function name, called when basic Express application created.
+Basically being used to use the Express plugins and middlewares.
+
++ **routing-controllers** library has not been involved yet.
++ The express application instance will be passed via parameter.
+
+
+##### `onHTTPS_ServerCreated`
+
+```
+(HTTPS_Server: NodeHTTPS.Server, expressApplication: ExpressApplication) => Promise<void>
+```
+
+As it obviously from the function name, called when the HTTPS server created.
+
++ **routing-controllers** library has not been involved yet.
++ The HTTPS server instance, and also the express application instance will be passed via parameters.
+
+
+
+##### `onRoutingControllersSetupComplete`
+
+```
+(expressApplication: ExpressApplication) => Promise<void>;
+```
+
+As it obviously from the function name, called when the **routing-controllers** functionality has been initialized.
+
+
+##### `onRoutingControllersSetupComplete`
+
+```
+() => Promise<void>
+```
+
+As it obviously from the function name, called when the application　actually started and ready to accept the HTTP
+  requests.
+Usually being called to log the application starting.
+
+
+### `redirectOnNotFound`
+
+```
+redirectOnNotFound(targetRoute: string): (_request: Express.Request, response: Express.Response) => void
+```
+
+Redirects to specified route when `response.headersSent` value is false.
+Intended to be used via `expressApplicationUse()` _after_ the initialization of **routing-controllers** application
+  complete to redirect to "Not found" page.
+
+Although with the plain Express the "Not found" page is being provided by other way, with **routing-controllers** the
+  [usual ways may not work](https://github.com/typestack/routing-controllers/discussions/1476) because of incorrectly
+  arranged routes.
+There is no official recommendation how to redirect to "Not found" page when no route matchings found so
+  `redirectOnNotFound` function may be used for such purposes. 
+
 
 ### `Route`
 

@@ -47,7 +47,7 @@ export abstract class QueryParametersProcessor {
 
         } catch (error: unknown) {
 
-          Logger.throwErrorAndLog({
+          Logger.throwErrorWithFormattedMessage({
             errorInstance: new QueryParametersProcessor.QueryParametersDeserializingError(),
             title: QueryParametersProcessor.QueryParametersDeserializingError.localization.defaultTitle,
             occurrenceLocation: "QueryParametersProcessor.process(propertiesSpecification, deserializer)",
@@ -58,7 +58,7 @@ export abstract class QueryParametersProcessor {
 
 
         /* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --
-        * Unfortunately even explicit type annotation for `serializedQueryParameters` does not assure TypeScript that
+        * Unfortunately, even explicit type annotation for `serializedQueryParameters` does not assure TypeScript that
         *   this value could be undefined as array element which could not present. */
         const deserializedQueryParameters: unknown = deserializer(serializedQueryParameters ?? "");
 
@@ -66,12 +66,12 @@ export abstract class QueryParametersProcessor {
           deserializedQueryParameters,
           {
             nameForLogging: "DeserializedQueryParameters",
-            subtype: RawObjectDataProcessor.ObjectSubtypes.fixedKeyAndValuePairsObject,
+            subtype: RawObjectDataProcessor.ObjectSubtypes.fixedSchema,
             properties: propertiesSpecification
           }
         );
 
-        if (processingResult.rawDataIsInvalid) {
+        if (processingResult.isRawDataInvalid) {
           throw new BadRequestError(processingResult.validationErrorsMessages.join("\n"));
         }
 
