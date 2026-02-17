@@ -14,7 +14,7 @@ Also, install the following peer dependencies if not installed yet.
 
 + **body-parser**: ~2.2.0
 + **express**: ~5.1.0
-+ **express-session**: ~1.18.0
++ **express-session**: ~1.19.0
 + **routing-controllers**: ~0.11.0
 
 
