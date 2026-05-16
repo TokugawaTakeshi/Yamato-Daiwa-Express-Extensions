@@ -1,21 +1,22 @@
 {
   "compilerOptions": {
 
-    "target": "ES2020",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "target": "ES2023",
+    "module": "nodenext",
+    "moduleResolution": "NodeNext",
 
-    "strict": true,
+    "types": [ "node" ],
+
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
 
     "removeComments": true,
+    "declaration": true,
 
-    "outDir": "Distributable/",
-    "declaration": true
+    "rootDir": "Source",
+    "outDir": "Distributable/"
+
   },
 
   "include": [ "Source/**/*" ],

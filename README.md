@@ -450,7 +450,9 @@ export default class UserController {
       willBeFirstAmongOnesOfSameType,
       currentContOfUsersOfSameType
     }: Readonly<{
-      
+      userType: UserTypes;
+      willBeFirstAmongOnesOfSameType: boolean;
+      currentContOfUsersOfSameType: number;
     }>
   ): Promise<EditorForNewUserMVC_FragmentVariables> {
     
