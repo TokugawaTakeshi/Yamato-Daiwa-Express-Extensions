@@ -1,7 +1,28 @@
 # Yamato Daiwa Express Extensions
 
+[![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/@yamato-daiwa/express-extensions)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TokugawaTakeshi/Yamato-Daiwa-Express-Extensions)
+[![MIT](https://img.shields.io/badge/MIT-green?style=for-the-badge)](https://github.com/TokugawaTakeshi/Yamato-Daiwa-Express-Extensions/blob/master/LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+
+[![NPM Version](https://img.shields.io/npm/v/@yamato-daiwa/es-extensions)](https://www.npmjs.com/package/@yamato-daiwa/express-extensions)
+![No any type](https://img.shields.io/badge/Type_safety-No_any-brightgreen.svg?style=flat)
+
 Additional functions for [express](https://www.npmjs.com/package/express) and its plugins, and also for 
   [routing-controllers](https://www.npmjs.com/package/routing-controllers).
+
+![Yamato Daiwa Express Extensions](https://github.com/user-attachments/assets/d4b32f70-0e2c-4ce0-af8b-0ac408b61561)
+
+
+## Requirements
+
++ **Minimal Node.js version**: 22.0.0
++ **Peer dependencies**
+  + **body-parser**: 2.3.0 or its patch version
+  + **express**: 5.2.0 or its patch version
+  + **express-session**: 1.19.0 or its patch version
+  + **routing-controllers**: 0.11.0 or its patch version
+  * **@yamato-daiwa/es-extensions**: 1.9.0 or its patch version
 
 
 ## Installation
@@ -9,13 +30,6 @@ Additional functions for [express](https://www.npmjs.com/package/express) and it
 ```Bash
 npm i @yamato-daiwa/express-extensions -E
 ```
-
-Also, install the following peer dependencies if not installed yet.
-
-+ **body-parser**: ~2.2.0
-+ **express**: ~5.1.0
-+ **express-session**: ~1.19.0
-+ **routing-controllers**: ~0.11.0
 
 
 ## Functionality

@@ -1,3 +1,10 @@
+/*!
+ * @yamato-daiwa/express-extensions v2.0
+ * (c) 2023 Yamato Daiwa Co., Ltd.
+ * Released under the MIT License.
+ */
+
+
 export { ExpressMiddleware } from "./ExpressMiddleware";
 export { QueryParametersProcessor } from "./QueryParametersProcessor";
 export { initializeRoutingControllersExpressHTTPS_Application } from "./initializeRoutingControllersExpressHTTPS_Application";

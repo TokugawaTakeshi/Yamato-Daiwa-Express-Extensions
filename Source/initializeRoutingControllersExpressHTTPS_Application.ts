@@ -51,14 +51,21 @@ export async function initializeRoutingControllersExpressHTTPS_Application(
 
   await onExpressApplicationCreated(expressApplication);
 
-  const HTTPS_Server: NodeHTTPS.Server = NodeHTTPS.createServer(
-    {
-      key: "SSL_Key" in HTTPS ?
-          HTTPS.SSL_Key : FileSystem.readFileSync(HTTPS.SSL_KeyFilePath__absoluteOrRelative, "utf8"),
-      cert: "SSL_Certificate" in HTTPS ?
-          HTTPS.SSL_Certificate : FileSystem.readFileSync(HTTPS.SSL_CertificateFilePath__absoluteOrRelative, "utf8")
-    },
-    expressApplication
+  const HTTPS_Server: NodeHTTPS.Server =
+      NodeHTTPS.createServer(
+
+        {
+          key: "SSL_Key" in HTTPS ?
+              HTTPS.SSL_Key : FileSystem.readFileSync(HTTPS.SSL_KeyFilePath__absoluteOrRelative, "utf8"),
+          cert: "SSL_Certificate" in HTTPS ?
+              HTTPS.SSL_Certificate : FileSystem.readFileSync(HTTPS.SSL_CertificateFilePath__absoluteOrRelative, "utf8")
+        },
+
+        /* eslint-disable-next-line @typescript-eslint/strict-void-return --
+        * There no documentation proves that this code is correct; the correctness of this code has been known
+        *   via the GitHub issue: https://github.com/typestack/routing-controllers/discussions/1243 */
+        expressApplication
+
   );
 
   await onHTTPS_ServerCreated?.(HTTPS_Server, expressApplication);
