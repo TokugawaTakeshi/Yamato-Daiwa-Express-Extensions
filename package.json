@@ -1,6 +1,6 @@
 {
   "name": "@yamato-daiwa/express-extensions",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Additional functionality for Express.js and also \"routing-controllers\" aimed to reduce the routine code.",
   "keywords": [
     "nodejs",
@@ -29,7 +29,7 @@
     "node": ">=22.0.0"
   },
   "peerDependencies": {
-    "@yamato-daiwa/es-extensions": "1.9.0",
+    "@yamato-daiwa/es-extensions": "~1.9.0",
     "body-parser": "~2.3.0",
     "express": "~5.2.0",
     "express-session": "~1.19.0",
